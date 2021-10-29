@@ -14,6 +14,16 @@ function App() {
 }
 
 function TweetArea() {
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  const handleClick = async () => {
+    setIsLoading(true)
+    document.querySelector('#tweet-text').setAttribute('disabled', 'disabled')
+    await loadNewSentence()
+    setIsLoading(false)
+    document.querySelector('#tweet-text').removeAttribute('disabled')
+  }
+
   return (
     <div id="area">
       <div id="tweet-inner">
@@ -25,7 +35,7 @@ function TweetArea() {
             <img src="/picture.png" width="48" height="48" alt="Автарка"/>
           </div>
           <div id="tweet-editor">
-            <TweetText />
+            <TweetText restart={handleClick} />
             <div id="tweet-buttonbar">
               <div id="tweet-bar-buttons">
                 <ButtonPlaceholder />
@@ -34,7 +44,7 @@ function TweetArea() {
                 <ButtonPlaceholder />
                 <ButtonPlaceholder />
               </div>
-              <TweetButton />
+              <TweetButton isLoading={isLoading} onClick={handleClick} />
             </div>
           </div>
         </div>
@@ -44,11 +54,12 @@ function TweetArea() {
 }
 
 let srcTweet = '', index = 0
-function TweetText() {
+function TweetText(props) {
   const textarea = React.useRef()
 
   const handleKeyDown = event => {
-    if(event.ctrlKey) return
+    if(event.ctrlKey || event.metaKey) return
+    if(event.key === 'Enter') return props.restart()
     event.preventDefault()
     textarea.current.value += srcTweet[index] ?? ''
     index++
@@ -82,20 +93,10 @@ function ButtonPlaceholder() {
   return <div className="button-placeholder"></div>
 }
 
-function TweetButton() {
-  const [isLoading, setIsLoading] = React.useState(false)
-
-  const handleClick = async () => {
-    setIsLoading(true)
-    document.querySelector('#tweet-text').setAttribute('disabled', 'disabled')
-    await loadNewSentence()
-    setIsLoading(false)
-    document.querySelector('#tweet-text').removeAttribute('disabled')
-  }
-
+function TweetButton(props) {
   return (
-    <button id="tweet-action" onClick={handleClick}>{
-      isLoading?
+    <button id="tweet-action" onClick={props.onClick}>{
+      props.isLoading?
       <Spinner animation="border" variant="light" size="sm" />
       :'Твитнуть'
     }</button>
