@@ -136,9 +136,9 @@ function Footer() {
   return (
     <footer>
       <p>
-        Шизоньян — генератор твитов <a href="https://twitter.com/M_Simonyan">Маргариты Симоньян</a>.
+        <span>Шизоньян — генератор твитов <a href="https://twitter.com/M_Simonyan">Маргариты Симоньян</a>.</span>
+        <span>Автор: VityaSchel / 2021</span>
         <a href='https://github.com/VityaSchel/shizonyan'>Репозиторий на GitHub</a>.
-        Автор: VityaSchel / 2021
       </p>
       <p>
         ИИ использует цепи маркова, натренировано на ~15 тыс твитах Маргариты с 2012 по 2021 годы.
