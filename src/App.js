@@ -109,6 +109,7 @@ async function loadSentences() {
   const response = await fetch('/generated.txt')
   const sentences = await response.text()
   window.sentences = sentences.split('\n')
+  loadNewSentence()
 }
 
 window.addEventListener('load', () => loadSentences())
