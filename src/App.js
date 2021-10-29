@@ -128,7 +128,7 @@ async function loadNewSentence() {
   document.querySelector('#tweet-text').value = ''
   srcTweet = window.sentences[Math.floor(Math.random() * window.sentences.length)]
   index = 0
-  document.querySelector('#tweet-text').focus()
+  setTimeout(() => document.querySelector('#tweet-text').focus(), 1)
   return true
 }
 
