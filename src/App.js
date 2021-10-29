@@ -16,12 +16,10 @@ function App() {
 function TweetArea() {
   const [isLoading, setIsLoading] = React.useState(false)
 
-  const handleClick = async () => {
+  const handleReset = async () => {
     setIsLoading(true)
-    document.querySelector('#tweet-text').setAttribute('disabled', 'disabled')
     await loadNewSentence()
     setIsLoading(false)
-    document.querySelector('#tweet-text').removeAttribute('disabled')
   }
 
   return (
@@ -35,7 +33,7 @@ function TweetArea() {
             <img src="/picture.png" width="48" height="48" alt="Автарка"/>
           </div>
           <div id="tweet-editor">
-            <TweetText restart={handleClick} />
+            <TweetText restart={handleReset} disabled={isLoading} />
             <div id="tweet-buttonbar">
               <div id="tweet-bar-buttons">
                 <ButtonPlaceholder />
@@ -44,7 +42,7 @@ function TweetArea() {
                 <ButtonPlaceholder />
                 <ButtonPlaceholder />
               </div>
-              <TweetButton isLoading={isLoading} onClick={handleClick} />
+              <TweetButton isLoading={isLoading} onClick={handleReset} />
             </div>
           </div>
         </div>
@@ -81,10 +79,19 @@ function TweetText(props) {
 
   return (
     <>
-      <textarea onKeyDown={handleKeyDown} id="only-android"
-        ></textarea>
-      <textarea spellCheck="false" onKeyDown={handleKeyDown}
-        placeholder="Что происходит? Напечатайте текст на клавиатуре..." ref={textarea} id="tweet-text"></textarea>
+      <textarea
+        onKeyDown={handleKeyDown}
+        id="only-android"
+        disabled={props.disabled}
+      />
+      <textarea
+        spellCheck="false"
+        onKeyDown={handleKeyDown}
+        placeholder="Что происходит? Напечатайте текст на клавиатуре..."
+        ref={textarea}
+        id="tweet-text"
+        disabled={props.disabled}
+      />
     </>
   )
 }
@@ -117,9 +124,11 @@ window.addEventListener('load', () => loadSentences())
 
 async function loadNewSentence() {
   await new Promise(resolve => setInterval(() => window.sentences && resolve()))
+  await new Promise(resolve => setTimeout(resolve, 500)) // fake loading
   document.querySelector('#tweet-text').value = ''
   srcTweet = window.sentences[Math.floor(Math.random() * window.sentences.length)]
   index = 0
+  document.querySelector('#tweet-text').focus()
   return true
 }
 
