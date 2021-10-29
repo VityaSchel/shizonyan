@@ -43,14 +43,14 @@ function TweetArea() {
   )
 }
 
-let srcTweet, index
+let srcTweet = '', index = 0
 function TweetText() {
   const textarea = React.useRef()
 
   const handleKeyDown = event => {
     if(event.ctrlKey) return
     event.preventDefault()
-    textarea.current.value += srcTweet[index]??''
+    textarea.current.value += srcTweet[index] ?? ''
     index++
     textarea.current.scrollTo(0, 99999)
     return false
@@ -126,6 +126,7 @@ function Footer() {
     <footer>
       <p>
         Шизоньян — генератор твитов <a href="https://twitter.com/M_Simonyan">Маргариты Симоньян</a>.
+        <a href='https://github.com/VityaSchel/shizonyan'>Репозиторий на GitHub</a>.
         Автор: VityaSchel / 2021
       </p>
       <p>
